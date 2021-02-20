@@ -1,9 +1,14 @@
+"""
+BERTRAND Anthony
+
+This file contains the structure of the vue.
+"""
+
 from tkinter import * 
 import coderp
 
-
 class App:
-    
+    """Root of  the vue, containing ."""
     hill = None
     
     def __init__(self, master):
@@ -12,6 +17,8 @@ class App:
         titre.pack()
         c = Chiffr(master, self.hill)
         d = Dechiffr(master, self.hill)
+
+
 
 class Chiffr:
     
@@ -25,13 +32,14 @@ class Chiffr:
     b=None
     c=None
     d=None
-    
+
+#------------------------------------------------------------------------------    
     def __init__(self, master, hill): 
         self.hill = hill
         self.frame = Frame(master, bg="yellow")
         self.frame.pack()
         
-        titre = Label(self.frame, text="français -> code")
+        titre = Label(self.frame, text="français -> encrypt")
         titre.pack()
         self.ver = StringVar()
         p3 = PanedWindow(self.frame, orient=VERTICAL, background="red")
@@ -68,16 +76,18 @@ class Chiffr:
         btncopie = Button(self.frame, text="copie", command=self.copie)
         btncopie.pack(side=LEFT)
     
-    
+#------------------------------------------------------------------------------    
     def copie(self):
         self.frame.clipboard_clear()
         self.frame.clipboard_append(self.label.cget("text"))
-        
+
+#------------------------------------------------------------------------------        
     def chif(self):
         self.v.set(self.hill.coder(self.entree.get()))
-        
+
+#------------------------------------------------------------------------------        
     def verif(self):
-        self.ver.set(self.hill.verifmatrice(self.a.get(), self.b.get(), self.c.get(), self.d.get()))
+        self.ver.set(self.hill.verif_matrice(self.a.get(), self.b.get(), self.c.get(), self.d.get()))
         
         
 class Dechiffr:
@@ -92,13 +102,13 @@ class Dechiffr:
     c=None
     d=None
     
-    
+#------------------------------------------------------------------------------    
     def __init__(self, master, hill):
         self.hill = hill
         self.frame = Frame(master, bg="green")
         self.frame.pack()
         
-        titre = Label(self.frame, text="code -> français")
+        titre = Label(self.frame, text="encrypt -> français")
         titre.pack()
         
         #
@@ -142,44 +152,48 @@ class Dechiffr:
     
         btncopie = Button(self.frame, text="copie", command=self.copie)
         btncopie.pack(side=LEFT)
-    
+
+#------------------------------------------------------------------------------    
     def copie(self):
         self.frame.clipboard_clear()
         self.frame.clipboard_append(self.label.cget("text"))
-                
+
+#------------------------------------------------------------------------------                
     def dechif(self):
         self.v.set(self.hill.decoder(self.entree.get()))
-        
+
+#------------------------------------------------------------------------------        
     def verif(self):
         self.a.delete(0, len(self.a.get()))
-        self.a.insert(0, self.hill.B1[0][0])
+        self.a.insert(0, self.hill.decrypt[0][0])
         self.b.delete(0, len(self.b.get()))
-        self.b.insert(0, self.hill.B1[0][1])
+        self.b.insert(0, self.hill.decrypt[0][1])
         self.c.delete(0, len(self.c.get()))
-        self.c.insert(0, self.hill.B1[1][0])
+        self.c.insert(0, self.hill.decrypt[1][0])
         self.d.delete(0, len(self.d.get()))
-        self.d.insert(0, self.hill.B1[1][1])
-        
+        self.d.insert(0, self.hill.decrypt[1][1])
+
+#------------------------------------------------------------------------------        
     def setmat(self):
         a=int(self.a.get())
         b=int(self.b.get())
         c=int(self.c.get())
         d=int(self.d.get())
-        if self.hill.pgcd(a*d - b*c, 26) != 1:
+        if self.hill.gcd(a*d - b*c, 26) != 1:
             self.ver.set("erreur")
             return
-        self.hill.B1[0][0] = a
-        self.hill.B1[0][1] = b
-        self.hill.B1[1][0] = c
-        self.hill.B1[1][1] = d
+        self.hill.decrypt[0][0] = a
+        self.hill.decrypt[0][1] = b
+        self.hill.decrypt[1][0] = c
+        self.hill.decrypt[1][1] = d
         self.ver.set("ok")
         
         
 # root = Tk()
 # titre = Label(root, text="Traducteur").pack()
-# titre1 = Label(root, text="Français -> code").pack()
+# titre1 = Label(root, text="Français -> encrypt").pack()
 # a = Chiffr(root)
-# titre2 = Label(root, text="code -> Français").pack()
+# titre2 = Label(root, text="encrypt -> Français").pack()
 # b = Dechiffr(root)
 # root.mainloop()
 
