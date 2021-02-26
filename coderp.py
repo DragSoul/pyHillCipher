@@ -11,7 +11,9 @@ https://en.wikipedia.org/wiki/Hill_cipher#Encryption
 class Hill:
     IGNORED_CHAR = [" ", ",", ";", ".", "(", ")", "[", "]", "?", "!", "/", 
                     "\\", "é", "è", "à", "€", "$", "%", "\"", "\'", "ù",
-                    "#", "&", "-", "_", "ç", "ê", "ë", "=", "+", "-", "*"]
+                    "#", "&", "-", "_", "ç", "ê", "ë", "=", "+", "-", "*",
+                    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
     encrypt = None
     decrypt = None
 
@@ -83,148 +85,81 @@ class Hill:
     #--------------------------------------------------------------------------    
     def coder(self, s):
         """ """
-        tab = []
+        tab_ascii = []
         special_char = dict()
-        newS = ''
-        s = s.lower()
-
-        for i in range(len(s)):
-            if s[i] in self.IGNORED_CHAR:
-                special_char.setdefault(i, s[i])    # PB ignored characters stay
-        s = "".join(s.split(" "))                   # in the var s
-
-        encrypt = self.encrypt_word(s)
-        if len(s)%2 != 0:   
-            for i in range(0, len(encrypt)-1, 2):
-                codage = self.crypt_hill(encrypt[i], encrypt[i+1])
-                for j in range(len(codage)):
-                    tab.append(codage[j])
-            tab.append(encrypt[len(encrypt)-1])
-        else:
-            for i in range(0, len(encrypt), 2):
-                codage = self.crypt_hill(encrypt[i], encrypt[i+1])
-                for j in range(len(codage)):
-                    tab.append(codage[j])
-
-        for i in range(len(tab)):
-            j = i
-            while j in special_char:
-                newS = newS + special_char.pop(j)
-                j += 1
-
-            newS = newS + self.decrypt_letter(tab[i])
-                
-        return newS
-    
-    #--------------------------------------------------------------------------    
-    def decoder(self, s):
-        tab = []
-        special_char = dict()
-        newS = ''
+        new_s = ''
         s = s.lower()
         for i in range(len(s)):
             if s[i] in self.IGNORED_CHAR:
                 special_char.setdefault(i, s[i])
-        s = "".join(s.split(" "))
-        encrypt = self.encrypt_word(s)
-        if len(s)%2 != 0:  
-            for i in range(0, len(encrypt)-1, 2):
-                codage = self.decrypt_hill(encrypt[i], encrypt[i+1])
-                for j in range(len(codage)):
-                    tab.append(codage[j])
-            tab.append(encrypt[len(encrypt)-1])
-        else:
-            for i in range(0, len(encrypt), 2):
-                codage = self.decrypt_hill(encrypt[i], encrypt[i+1])
-                for j in range(len(codage)):
-                    tab.append(codage[j])
 
-        for i in range(len(tab)):
-            j = i
-            while j in special_char:
-                newS = newS + special_char.pop(j)
-                j += 1
-
-            newS = newS + self.decrypt_letter(tab[i])
-        
-        return newS
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# save 
-def coder2(self, s):
-        """ """
-        tab = []
-        tabesp = []
-        newS = ''
-        s = s.lower()
-        for i in range(len(s)):
-            if s[i] == " ":             # maybe add a list of ignored characters
-                tabesp.append(i)
-        s = "".join(s.split(" "))
+        for char in self.IGNORED_CHAR:
+            s = "".join(s.split(char))
+        print(s)
+        print(special_char)
         encrypt = self.encrypt_word(s)
         if len(s)%2 != 0:   
             for i in range(0, len(encrypt)-1, 2):
                 codage = self.crypt_hill(encrypt[i], encrypt[i+1])
                 for j in range(len(codage)):
-                    tab.append(codage[j])
-            tab.append(encrypt[len(encrypt)-1])
+                    tab_ascii.append(codage[j])
+            tab_ascii.append(encrypt[len(encrypt)-1])
         else:
             for i in range(0, len(encrypt), 2):
                 codage = self.crypt_hill(encrypt[i], encrypt[i+1])
                 for j in range(len(codage)):
-                    tab.append(codage[j])
-        j=0   
-        for i in range(len(tab)):
-            if j in tabesp:
-                newS = newS + " "
-                j+=1
-            newS = newS + self.decrypt_letter(tab[i])
-            j += 1
-                
-        return newS
+                    tab_ascii.append(codage[j])
 
+        # transforme les nombres ascii en lettres
+        tab_lettre = []
+        for nb in tab_ascii:
+            tab_lettre.append(self.decrypt_letter(nb))
 
-def decoder(self, s):
-        tab = []
-        tabesp = []
-        newS = ''
+        # remet les carac spéciaux
+        for n in special_char.keys():
+            tab_lettre.insert(n, special_char.get(n))
+        
+        # transforme le tableau en chaine de caractere
+        for char in tab_lettre:
+            new_s += char
+        return new_s
+    
+    #--------------------------------------------------------------------------    
+    def decoder(self, s):
+        tab_ascii = []
+        special_char = dict()
+        new_s = ''
         s = s.lower()
         for i in range(len(s)):
-            if s[i] == " ":
-                tabesp.append(i)
-        s = "".join(s.split(" "))
+            if s[i] in self.IGNORED_CHAR:
+                special_char.setdefault(i, s[i])
+        for char in self.IGNORED_CHAR:
+            s = "".join(s.split(char))
+        print(s)
         encrypt = self.encrypt_word(s)
         if len(s)%2 != 0:  
             for i in range(0, len(encrypt)-1, 2):
                 codage = self.decrypt_hill(encrypt[i], encrypt[i+1])
                 for j in range(len(codage)):
-                    tab.append(codage[j])
-            tab.append(encrypt[len(encrypt)-1])
+                    tab_ascii.append(codage[j])
+            tab_ascii.append(encrypt[len(encrypt)-1])
         else:
             for i in range(0, len(encrypt), 2):
                 codage = self.decrypt_hill(encrypt[i], encrypt[i+1])
                 for j in range(len(codage)):
-                    tab.append(codage[j])
-        j=0
-        for i in range(len(tab)):
-            if j in tabesp:
-                newS = newS + " "
-                j += 1
-            newS = newS + self.decrypt_letter(tab[i])
-            j += 1
+                    tab_ascii.append(codage[j])
+
+        # transforme les nombres ascii en lettres
+        tab_lettre = []
+        for nb in tab_ascii:
+            tab_lettre.append(self.decrypt_letter(nb))
+
+        # remet les carac spéciaux
+        for n in special_char.keys():
+            tab_lettre.insert(n, special_char.get(n))
         
-        return newS
+        # transforme le tableau en chaine de caractere
+        for char in tab_lettre:
+            new_s += char
+        return new_s        
+

@@ -33,7 +33,7 @@ class Chiffr:
     c=None
     d=None
 
-#------------------------------------------------------------------------------    
+#------------------------------------------------------------------------------
     def __init__(self, master, hill): 
         self.hill = hill
         self.frame = Frame(master, bg="yellow")
@@ -76,7 +76,7 @@ class Chiffr:
         btncopie = Button(self.frame, text="copie", command=self.copie)
         btncopie.pack(side=LEFT)
     
-#------------------------------------------------------------------------------    
+#------------------------------------------------------------------------------
     def copie(self):
         self.frame.clipboard_clear()
         self.frame.clipboard_append(self.label.cget("text"))
