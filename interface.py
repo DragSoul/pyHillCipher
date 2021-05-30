@@ -8,7 +8,7 @@ from tkinter import *
 import coderp
 
 class App:
-    """Root of  the vue, containing ."""
+    """Root of  the vue, containing Chiffr and Dechiffr."""
     hill = None
     
     def __init__(self, master):
