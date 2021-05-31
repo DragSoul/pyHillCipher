@@ -8,7 +8,7 @@ from tkinter import *
 import coderp
 
 class App:
-    """Root of  the vue, containing Chiffr and Dechiffr."""
+    """Root of the vue, containing Chiffr and Dechiffr."""
     hill = None
     
     def __init__(self, master):
@@ -19,7 +19,7 @@ class App:
         d = Dechiffr(master, self.hill)
 
 
-
+#------------------------------------------------------------------------------
 class Chiffr:
     
     hill=None
@@ -33,7 +33,7 @@ class Chiffr:
     c=None
     d=None
 
-#------------------------------------------------------------------------------
+    #--------------------------------------------------------------------------
     def __init__(self, master, hill): 
         self.hill = hill
         self.frame = Frame(master, bg="yellow")
@@ -70,26 +70,29 @@ class Chiffr:
         self.button.pack(side=LEFT)
         
         self.v = StringVar()
-        self.label = Label(self.frame, textvariable=self.v, wraplength=120, width=20, height=5)
+        self.label = Label(self.frame, textvariable=self.v, wraplength=120,
+                            width=20, height=5)
         self.label.pack(side=LEFT)
         
         btncopie = Button(self.frame, text="copie", command=self.copie)
         btncopie.pack(side=LEFT)
     
-#------------------------------------------------------------------------------
+        #----------------------------------------------------------------------
     def copie(self):
         self.frame.clipboard_clear()
         self.frame.clipboard_append(self.label.cget("text"))
 
-#------------------------------------------------------------------------------        
+    #--------------------------------------------------------------------------     
     def chif(self):
         self.v.set(self.hill.coder(self.entree.get()))
 
-#------------------------------------------------------------------------------        
+    #--------------------------------------------------------------------------
     def verif(self):
-        self.ver.set(self.hill.verif_matrice(self.a.get(), self.b.get(), self.c.get(), self.d.get()))
+        self.ver.set(self.hill.verif_matrice(self.a.get(), self.b.get(),
+                    self.c.get(), self.d.get()))
         
-        
+
+#------------------------------------------------------------------------------   
 class Dechiffr:
     hill=None
     frame=None
@@ -102,7 +105,7 @@ class Dechiffr:
     c=None
     d=None
     
-#------------------------------------------------------------------------------    
+    #--------------------------------------------------------------------------   
     def __init__(self, master, hill):
         self.hill = hill
         self.frame = Frame(master, bg="green")
@@ -147,22 +150,23 @@ class Dechiffr:
         self.button.pack(side=LEFT)
         
         self.v = StringVar()
-        self.label = Label(self.frame, textvariable=self.v, wraplength=120, height=5, width=20)
+        self.label = Label(self.frame, textvariable=self.v, wraplength=120,
+                            height=5, width=20)
         self.label.pack(side=LEFT)
     
         btncopie = Button(self.frame, text="copie", command=self.copie)
         btncopie.pack(side=LEFT)
 
-#------------------------------------------------------------------------------    
+    #--------------------------------------------------------------------------
     def copie(self):
         self.frame.clipboard_clear()
         self.frame.clipboard_append(self.label.cget("text"))
 
-#------------------------------------------------------------------------------                
+    #--------------------------------------------------------------------------              
     def dechif(self):
         self.v.set(self.hill.decoder(self.entree.get()))
 
-#------------------------------------------------------------------------------        
+    #--------------------------------------------------------------------------    
     def verif(self):
         self.a.delete(0, len(self.a.get()))
         self.a.insert(0, self.hill.decrypt[0][0])
@@ -173,7 +177,7 @@ class Dechiffr:
         self.d.delete(0, len(self.d.get()))
         self.d.insert(0, self.hill.decrypt[1][1])
 
-#------------------------------------------------------------------------------        
+    #--------------------------------------------------------------------------     
     def setmat(self):
         a=int(self.a.get())
         b=int(self.b.get())

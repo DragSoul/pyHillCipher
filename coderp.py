@@ -118,7 +118,8 @@ class Hill:
 
     #--------------------------------------------------------------------------    
     def coder(self, s):
-        """ """
+        """main function to encrypt. It "removes" special caracters and put 
+        them back to their initial places after the encryption"""
 
         # transforme une chaine de carac en liste d'entier (ASCII)  
         s = s.lower()
@@ -133,7 +134,7 @@ class Hill:
             else:
                 tab_ascii.append(encrypt[i])
 
-        # encypte avec hill
+        # encrypte avec hill
         tab_ascii2 = self.hill_encrypt(tab_ascii)
         
         # remet les carac spéciaux
@@ -154,7 +155,9 @@ class Hill:
     
     #--------------------------------------------------------------------------    
     def decoder(self, s):
-        
+        """main function to decrypt. It "removes" special caracters and put 
+        them back to their initial places after the decryption"""
+
         special_char = dict()
         new_s = ''
         s = s.lower()
