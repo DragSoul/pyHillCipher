@@ -84,11 +84,11 @@ class Chiffr:
 
     #--------------------------------------------------------------------------     
     def chif(self):
-        self.v.set(self.hill.coder(self.entree.get()))
+        self.v.set(self.hill.code(self.entree.get(), 0))
 
     #--------------------------------------------------------------------------
     def verif(self):
-        self.ver.set(self.hill.verif_matrice(self.a.get(), self.b.get(),
+        self.ver.set(self.hill.check_matrix(self.a.get(), self.b.get(),
                     self.c.get(), self.d.get()))
         
 
@@ -164,7 +164,7 @@ class Dechiffr:
 
     #--------------------------------------------------------------------------              
     def dechif(self):
-        self.v.set(self.hill.decoder(self.entree.get()))
+        self.v.set(self.hill.code(self.entree.get(), 1))
 
     #--------------------------------------------------------------------------    
     def verif(self):

@@ -23,7 +23,7 @@ class Hill:
         self.decrypt = [[5, 12], [15, 25]]
 
     #--------------------------------------------------------------------------
-    def verif_matrice(self, a, b, c, d):
+    def check_matrix(self, a, b, c, d):
         """check if the encrypt matrix is valid"""
 
         a, b, c, d = int(a), int(b), int(c), int(d)
@@ -117,9 +117,10 @@ class Hill:
         return tab_ascii
 
     #--------------------------------------------------------------------------    
-    def coder(self, s):
-        """main function to encrypt. It "removes" special caracters and put 
-        them back to their initial places after the encryption"""
+    def code(self, s, way):
+        """main function to encrypt/decrypt. It "removes" special caracters and put 
+        them back to their initial places after the encryption.
+        way==0 => encrypt, else decrypt"""
 
         # transforme une chaine de carac en liste d'entier (ASCII)  
         s = s.lower()
@@ -129,13 +130,16 @@ class Hill:
         tab_ascii = []
         special_char = dict()
         for i in range(len(encrypt)):
-            if encrypt[i] not in range(0, 25):
+            if encrypt[i] not in range(0, 26):
                 special_char.setdefault(i, encrypt[i])
             else:
                 tab_ascii.append(encrypt[i])
 
         # encrypte avec hill
-        tab_ascii2 = self.hill_encrypt(tab_ascii)
+        if way == 0:
+            tab_ascii2 = self.hill_encrypt(tab_ascii)
+        else:
+            tab_ascii2 = self.hill_decrypt(tab_ascii)
         
         # remet les carac spéciaux
         for n in special_char.keys():
@@ -153,36 +157,3 @@ class Hill:
             new_s += char
         return new_s
     
-    #--------------------------------------------------------------------------    
-    def decoder(self, s):
-        """main function to decrypt. It "removes" special caracters and put 
-        them back to their initial places after the decryption"""
-
-        special_char = dict()
-        new_s = ''
-        s = s.lower()
-        for i in range(len(s)):
-            if s[i] in self.IGNORED_CHAR:
-                special_char.setdefault(i, s[i])
-        for char in self.IGNORED_CHAR:
-            s = "".join(s.split(char))
-        #print(s)
-
-        encrypt = self.encrypt_word(s)
-        
-        tab_ascii = self.hill_decrypt(encrypt)
-
-        # transforme les nombres ascii en lettres
-        tab_lettre = []
-        for nb in tab_ascii:
-            tab_lettre.append(self.decrypt_letter(nb))
-
-        # remet les carac spéciaux
-        for n in special_char.keys():
-            tab_lettre.insert(n, special_char.get(n))
-        
-        # transforme le tableau en chaine de caractere
-        for char in tab_lettre:
-            new_s += char
-        return new_s        
-
