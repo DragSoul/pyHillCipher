@@ -7,7 +7,7 @@ def read_file(filename):
                 line = line[0:-1]
             language = line.split(" ")
             tab.append(language)
-    print(tab)
+    return tab
 
 
 
