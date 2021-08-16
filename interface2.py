@@ -5,6 +5,7 @@ This file contains the structure of the vue.
 """
 
 from tkinter import *
+from tkinter.font import BOLD
 from writefile import read_file 
 import coderp
 
@@ -188,39 +189,39 @@ fenetre.geometry('800x400')
 fenetre.minsize(width=600, height=300)
 
 # Menubar with the  4 new features
-menu = Menu(fenetre)
+menu = Menu(fenetre, bg="CornflowerBlue", activebackground="DeepSkyBlue")
 menu.add_command(label="charger", command=charger)
 menu.add_command(label="créer", command=creer)
 menu.add_command(label="importer", command=importer)
 menu.add_command(label="exporter", command=exporter)
 
 # initialise my 2 main frames
-crypt = Frame(fenetre, bg="green")
+crypt = Frame(fenetre, bg="blue")
 crypt.pack(expand=YES, fill=BOTH)
-decrypt = Frame(fenetre, bg="yellow")
+decrypt = Frame(fenetre, bg="darkblue")
 decrypt.pack(side=BOTTOM, expand=YES, fill=BOTH)
 
 # content of the frame 1
-label_crypt = Label(crypt, text="Coder", bg="green", font="Arial", fg="black")
+label_crypt = Label(crypt, text="Coder", bg="blue", font=("Arial", 16, BOLD), fg="DeepSkyBlue")
 label_crypt.pack()
 crypt_var = StringVar()
-text_crypt = Text(crypt, height=0, width=0)
+text_crypt = Text(crypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
 text_crypt.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
-button_crypt = Button(crypt, text="Traduire", command=translate1)
+button_crypt = Button(crypt, text="Traduire", bg="CornflowerBlue", activebackground="DeepSkyBlue", border=0, command=translate1)
 button_crypt.pack(side=LEFT)
 label_crypt_var = StringVar()
-text_crypt2 = Text(crypt, height=0, width=0)
+text_crypt2 = Text(crypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
 text_crypt2.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
 
 # content of the frame 2
-label_decrypt = Label(decrypt, text="Decoder", bg="yellow", font="Arial", fg="black")
+label_decrypt = Label(decrypt, text="Décoder", bg="darkblue",font=("Arial", 16, BOLD), fg="DeepSkyBlue")
 label_decrypt.pack()
 decrypt_var = StringVar()
-text_decrypt = Text(decrypt, height=0, width=0)
+text_decrypt = Text(decrypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
 text_decrypt.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
-button_decrypt = Button(decrypt, text="Traduire", command=translate2)
+button_decrypt = Button(decrypt, text="Traduire", bg="CornflowerBlue", activebackground="DeepSkyBlue", border=0, command=translate2)
 button_decrypt.pack(side=LEFT)
-text_decrypt2 = Text(decrypt, height=0, width=0)
+text_decrypt2 = Text(decrypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
 text_decrypt2.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
 
 fenetre.config(menu=menu, bg="black")
