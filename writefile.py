@@ -24,7 +24,7 @@ def delete_language(filename, language):
     boulean = 0
 
     # make a list of element of the file
-    f_read = open("file.txt", "r")
+    f_read = open(filename, "r")
     lines = f_read.readlines()
     f_read.close()
 
@@ -42,9 +42,3 @@ def delete_language(filename, language):
         print("language not found")
     else:
         print("language deleted")
-
-
-filename = "file.txt"
-#delete_language(filename, "Elfes")
-add_language(filename, "Elfes 1 4 6 8")
-read_file(filename)

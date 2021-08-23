@@ -5,6 +5,7 @@ This file contains the structure of the vue.
 """
 
 from tkinter import *
+from tkinter.ttk import Combobox
 from tkinter.font import BOLD
 from writefile import read_file 
 import coderp
@@ -27,22 +28,32 @@ def popup(top):
 #------------------------------------------------------------------------------
 def charger():
     """load a language"""
+    def select(event):
+        """Select the language"""
+        print(combobox.get()) # doit mtn changer les valeures du langage dans l'algo...
+
+    
     top = Toplevel(fenetre)
     popup(top)
     _,_,X,Y = geoliste(fenetre.geometry())
     top.geometry("100x200%+d%+d" % (X,Y))
     top.title("charger")
-    scrollbar = Scrollbar(top)
-    scrollbar.pack(side=RIGHT, fill=BOTH)
 
-    liste = Listbox(top, yscrollcommand=scrollbar.set)
-
+    languageSelect	= StringVar()
     languages = read_file("languages.txt")
+    languages_name = []
     for language in languages:
-        liste.insert(END, language[0])
-        
-    liste.pack(side=LEFT, fill=BOTH)
-    scrollbar.config(command=liste.yview)
+        languages_name.append(language[0])
+
+    combobox = Combobox(top, textvariable=languageSelect, values=languages_name, \
+        state='readonly')
+    combobox.bind('<<ComboboxSelected>>', func=select)
+    combobox.pack()
+    
+
+
+    
+
 #------------------------------------------------------------------------------
 def creer():
     """create a new language"""
@@ -155,6 +166,8 @@ def translate1():
     text_crypt2.config(state=NORMAL)
     text_crypt2.delete(1.0,"end")
     text_crypt2.insert(1.0, hill.code(text, 0))
+    fenetre.clipboard_clear()                      # Copy the result in the clipboard 
+    fenetre.clipboard_append(hill.code(text, 0))   # to avoid the pb of the textarea disabled
     text_crypt2.config(state=DISABLED)
 
 #------------------------------------------------------------------------------
@@ -165,6 +178,8 @@ def translate2():
     text_decrypt2.config(state=NORMAL)
     text_decrypt2.delete(1.0,"end")
     text_decrypt2.insert(1.0, hill.code(text, 1))
+    fenetre.clipboard_clear()
+    fenetre.clipboard_append(hill.code(text, 1))
     text_decrypt2.config(state=DISABLED)
 
 #------------------------------------------------------------------------------
@@ -205,23 +220,23 @@ decrypt.pack(side=BOTTOM, expand=YES, fill=BOTH)
 label_crypt = Label(crypt, text="Coder", bg="blue", font=("Arial", 16, BOLD), fg="DeepSkyBlue")
 label_crypt.pack()
 crypt_var = StringVar()
-text_crypt = Text(crypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
+text_crypt = Text(crypt, height=0, width=0, bg="lightblue", border=0, exportselection=1)
 text_crypt.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
 button_crypt = Button(crypt, text="Traduire", bg="CornflowerBlue", activebackground="DeepSkyBlue", border=0, command=translate1)
 button_crypt.pack(side=LEFT)
 label_crypt_var = StringVar()
-text_crypt2 = Text(crypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
+text_crypt2 = Text(crypt, height=0, width=0, bg="lightblue", border=0, state=DISABLED)
 text_crypt2.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
 
 # content of the frame 2
 label_decrypt = Label(decrypt, text="Décoder", bg="darkblue",font=("Arial", 16, BOLD), fg="DeepSkyBlue")
 label_decrypt.pack()
 decrypt_var = StringVar()
-text_decrypt = Text(decrypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
+text_decrypt = Text(decrypt, height=0, width=0, bg="lightblue", border=0, exportselection=1)
 text_decrypt.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
 button_decrypt = Button(decrypt, text="Traduire", bg="CornflowerBlue", activebackground="DeepSkyBlue", border=0, command=translate2)
 button_decrypt.pack(side=LEFT)
-text_decrypt2 = Text(decrypt, height=0, width=0, bg="lightblue", border=0, exportselection=0)
+text_decrypt2 = Text(decrypt, height=0, width=0, bg="lightblue", border=0, state=DISABLED)
 text_decrypt2.pack(side=LEFT, expand=YES, fill=BOTH, padx=50, pady=20)
 
 fenetre.config(menu=menu, bg="black")
