@@ -4,15 +4,19 @@ BERTRAND Anthony
 This file contains the structure of the vue.
 """
 
+from os import name
 from tkinter import *
 from tkinter.ttk import Combobox
 from tkinter.font import BOLD
-from writefile import read_file 
+from writefile import read_file
+from writefile import add_language
+import random as rd
 import coderp
 
 #------------------------------------------------------------------------------
 def geoliste(g):
     """return the geometry of a window g"""
+
     r=[i for i in range(0,len(g)) if not g[i].isdigit()]
     return [int(g[0:r[0]]),int(g[r[0]+1:r[1]]),int(g[r[1]+1:r[2]]),int(g[r[2]+1:])]
 
@@ -28,15 +32,24 @@ def popup(top):
 #------------------------------------------------------------------------------
 def charger():
     """load a language"""
+    
+    #--------------------------------------------------------------------------
     def select(event):
         """Select the language"""
-        print(combobox.get()) # doit mtn changer les valeures du langage dans l'algo...
+
+        print(combobox.get())
+        for language in languages:
+            name, a, b, c, d = language
+            if name == combobox.get():
+                msg = hill.check_matrix(a, b, c, d)
+                print(msg)
+                
 
     
     top = Toplevel(fenetre)
     popup(top)
     _,_,X,Y = geoliste(fenetre.geometry())
-    top.geometry("100x200%+d%+d" % (X,Y))
+    top.geometry("150x200%+d%+d" % (X,Y))
     top.title("charger")
 
     languageSelect	= StringVar()
@@ -57,6 +70,48 @@ def charger():
 #------------------------------------------------------------------------------
 def creer():
     """create a new language"""
+
+    #--------------------------------------------------------------------------
+    def auto_hill():
+        '''take random numbers that fit the conditions of the Hill cypher.
+        The tuple can't be the same as another one in the file.'''
+        languages = read_file("languages.txt")
+
+        # Check for name first
+        languages_name = []
+        for language in languages:
+            languages_name.append(language[0])
+        name = entry_name.get()
+        if(name in languages_name or name == '' or ' ' in name):
+            print("pb")
+        else : print("ok")
+
+        # loop until we found a good tuple.
+        boolean = True
+        while boolean:
+            a = rd.randint(1, 100)
+            b = rd.randint(1, 100)
+            c = rd.randint(1, 100)
+            d = rd.randint(1, 100)
+            msg = hill.check_matrix(a, b, c, d)
+            if msg == 'valide':
+                print('valide')
+                # now we must check the existence of this tuple in our file
+                exist = False
+                for language in languages:
+                    _, fa, fb, fc, fd = language
+                    if (a, b, c, d) == (fa, fb, fc, fd):
+                        exist = True
+                        break
+                if exist == True:
+                    continue
+                else:
+                    boolean = False
+                    s = name + ' ' + str(a) + ' ' + str(b) + ' ' + str(c) + ' ' + str(d)
+                    add_language('languages.txt', s)
+
+
+
     top = Toplevel(fenetre)
     popup(top)
     _,_,X,Y = geoliste(fenetre.geometry())
@@ -144,9 +199,12 @@ def creer():
         command=auto_hill, height=10)
     magic_button.pack(pady=10)
 
+    
+
 #------------------------------------------------------------------------------
 def importer():
     """import a language from a file"""
+
     top = Toplevel(fenetre)
     popup(top)
     top.title("importer")
@@ -154,6 +212,7 @@ def importer():
 #------------------------------------------------------------------------------
 def exporter():
     """export a language in a file"""
+
     top = Toplevel(fenetre)
     popup(top)
     top.title("exporter")
@@ -161,8 +220,8 @@ def exporter():
 #------------------------------------------------------------------------------
 def translate1():
     """translate from text to code"""
+
     text = text_crypt.get("1.0", "end-1c")
-    print(text)
     text_crypt2.config(state=NORMAL)
     text_crypt2.delete(1.0,"end")
     text_crypt2.insert(1.0, hill.code(text, 0))
@@ -173,18 +232,14 @@ def translate1():
 #------------------------------------------------------------------------------
 def translate2():
     """translate from code to text"""
+
     text = text_decrypt.get("1.0", "end-1c")
-    print(text)
     text_decrypt2.config(state=NORMAL)
     text_decrypt2.delete(1.0,"end")
     text_decrypt2.insert(1.0, hill.code(text, 1))
     fenetre.clipboard_clear()
     fenetre.clipboard_append(hill.code(text, 1))
     text_decrypt2.config(state=DISABLED)
-
-#------------------------------------------------------------------------------
-def auto_hill():
-    pass
 
 
 

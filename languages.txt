@@ -1,2 +1,3 @@
-Elfes 1 2 3 4
-Orcs 5 3 8 4
+Elfes 9 1 2 3
+Orcs 5 3 8 5
+test 57 37 32 49
